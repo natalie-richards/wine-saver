@@ -1,0 +1,35 @@
+type Bookmark {
+  name: String
+  grape: String
+  region: String
+  location: String
+}
+
+input AddBookmarkRequest {
+  name: String
+  grape: String
+  region: String
+  location: String
+}
+
+input UploadImageRequest {
+  base64Encoding: String!
+}
+
+type UploadImageResponse {
+  publicURL: String!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  listBookmarks: [Bookmark]
+  uploadImage(input: UploadImageRequest!): String
+}
+
+type Mutation {
+  addBookmark(input: AddBookmarkRequest!): Bookmark!
+}
