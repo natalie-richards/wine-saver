@@ -10,7 +10,7 @@ import (
 	"github.com/natalie-richards/wine-app/graph"
 )
 
-const defaultPort = "8080"
+const defaultPort = "8020"
 
 func main() {
 	port := os.Getenv("PORT")

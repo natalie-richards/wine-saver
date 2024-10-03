@@ -32,16 +32,6 @@ func (r *queryResolver) ListBookmarks(ctx context.Context) ([]*model.Bookmark, e
 	return bookmarks, nil
 }
 
-// UploadImage is the resolver for the uploadImage field.
-func (r *queryResolver) UploadImage(ctx context.Context, input model.UploadImageRequest) (*string, error) {
-	var app app.App
-	publicURL, err := app.UploadImageFromClient(ctx, &input)
-	if err != nil {
-		return nil, err
-	}
-	return publicURL, nil
-}
-
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
