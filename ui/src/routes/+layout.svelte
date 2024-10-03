@@ -6,7 +6,7 @@
 <Navbar color="light" light expand="md">
 	<Nav class="ms-auto" navbar>
 		<NavItem>
-			<NavLink href="#components/">Logout</NavLink>
+			<NavLink href="/bookmarks">My Bookmarks</NavLink>
 		</NavItem>
 	</Nav>
 </Navbar>

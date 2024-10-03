@@ -8,7 +8,6 @@ const storage = new Storage({
 });
 
 export async function generateV4UploadSignedUrl(fileName: string) {
-	// These options will allow temporary uploading of the file with outgoing
 	const options: GetSignedUrlConfig = {
 		version: 'v4',
 		action: 'write',

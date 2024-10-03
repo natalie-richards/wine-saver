@@ -6,38 +6,32 @@
 		Card,
 		CardHeader,
 		CardTitle,
-		CardBody
+		CardBody,
+		Spinner
 	} from '@sveltestrap/sveltestrap';
-	// import { gql, request } from 'graphql-request';
-	// import { API_URL } from '$lib/constants';
-	// import { onMount } from 'svelte';
+
 	import type { SubmitFunction } from '@sveltejs/kit';
-	// let processing: boolean;
 
-	// const document = gql`
-	// 	{
-	// 		listBookmarks {
-	// 			name
-	// 			region
-	// 		}
-	// 	}
-	// `;
-
-	// const test = async () => await request(API_URL, document);
-
-	// onMount(() => {
-	// 	test().then((data) => console.log(data));
-	// });
+	let processing: boolean;
 
 	const authorizedExtensions = ['.jpg', '.jpeg', '.png'];
 
 	const submitImage: SubmitFunction = () => {
+		processing = true;
 		return async ({ result }) => {
+			processing = false;
 			if (result.type === 'failure') {
 				console.error('Failed to upload image', result);
 			}
 			if (result.type === 'success') {
-				console.log('Image uploaded pub url', result.data);
+				if (!result.data?.results) {
+					console.error('No results available');
+					return;
+				}
+				const entities = result.data.results[0].entities;
+				for (const entity of entities) {
+					console.log(entity.classes);
+				}
 			}
 		};
 	};
@@ -62,6 +56,9 @@
 					accept={authorizedExtensions.join(',')}
 					required
 				/>
+				{#if processing}
+					<Spinner />
+				{/if}
 				<Button color="primary" type="submit">Submit</Button>
 			</form>
 		</CardBody>
