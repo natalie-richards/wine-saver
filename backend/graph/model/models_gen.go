@@ -22,14 +22,6 @@ type Mutation struct {
 type Query struct {
 }
 
-type UploadImageRequest struct {
-	Base64Encoding string `json:"base64Encoding"`
-}
-
-type UploadImageResponse struct {
-	PublicURL string `json:"publicURL"`
-}
-
 type User struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
