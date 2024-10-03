@@ -7,5 +7,3 @@ import (
 type Application struct {
 	DBConn *pgxpool.Pool
 }
-
-// Some serve logic

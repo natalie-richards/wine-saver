@@ -6,8 +6,7 @@
 		Card,
 		CardHeader,
 		CardTitle,
-		CardBody,
-		Form
+		CardBody
 	} from '@sveltestrap/sveltestrap';
 	// import { gql, request } from 'graphql-request';
 	// import { API_URL } from '$lib/constants';
@@ -33,11 +32,12 @@
 	const authorizedExtensions = ['.jpg', '.jpeg', '.png'];
 
 	const submitImage: SubmitFunction = () => {
-		console.log('submitting image');
-
 		return async ({ result }) => {
 			if (result.type === 'failure') {
 				console.error('Failed to upload image', result);
+			}
+			if (result.type === 'success') {
+				console.log('Image uploaded pub url', result.data);
 			}
 		};
 	};
