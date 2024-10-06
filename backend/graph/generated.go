@@ -49,10 +49,12 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Bookmark struct {
 		Grape    func(childComplexity int) int
+		Image    func(childComplexity int) int
 		Location func(childComplexity int) int
 		Name     func(childComplexity int) int
 		Notes    func(childComplexity int) int
 		Region   func(childComplexity int) int
+		Username func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -104,6 +106,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Bookmark.Grape(childComplexity), true
 
+	case "Bookmark.image":
+		if e.complexity.Bookmark.Image == nil {
+			break
+		}
+
+		return e.complexity.Bookmark.Image(childComplexity), true
+
 	case "Bookmark.location":
 		if e.complexity.Bookmark.Location == nil {
 			break
@@ -131,6 +140,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Bookmark.Region(childComplexity), true
+
+	case "Bookmark.username":
+		if e.complexity.Bookmark.Username == nil {
+			break
+		}
+
+		return e.complexity.Bookmark.Username(childComplexity), true
 
 	case "Mutation.addBookmark":
 		if e.complexity.Mutation.AddBookmark == nil {
@@ -609,6 +625,88 @@ func (ec *executionContext) fieldContext_Bookmark_notes(_ context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _Bookmark_image(ctx context.Context, field graphql.CollectedField, obj *model.Bookmark) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Bookmark_image(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Image, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Bookmark_image(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Bookmark",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Bookmark_username(ctx context.Context, field graphql.CollectedField, obj *model.Bookmark) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Bookmark_username(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Username, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Bookmark_username(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Bookmark",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_addBookmark(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_addBookmark(ctx, field)
 	if err != nil {
@@ -658,6 +756,10 @@ func (ec *executionContext) fieldContext_Mutation_addBookmark(ctx context.Contex
 				return ec.fieldContext_Bookmark_location(ctx, field)
 			case "notes":
 				return ec.fieldContext_Bookmark_notes(ctx, field)
+			case "image":
+				return ec.fieldContext_Bookmark_image(ctx, field)
+			case "username":
+				return ec.fieldContext_Bookmark_username(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Bookmark", field.Name)
 		},
@@ -722,6 +824,10 @@ func (ec *executionContext) fieldContext_Query_listBookmarks(_ context.Context, 
 				return ec.fieldContext_Bookmark_location(ctx, field)
 			case "notes":
 				return ec.fieldContext_Bookmark_notes(ctx, field)
+			case "image":
+				return ec.fieldContext_Bookmark_image(ctx, field)
+			case "username":
+				return ec.fieldContext_Bookmark_username(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Bookmark", field.Name)
 		},
@@ -2805,7 +2911,7 @@ func (ec *executionContext) unmarshalInputAddBookmarkRequest(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "grape", "region", "location", "notes"}
+	fieldsInOrder := [...]string{"name", "grape", "region", "location", "notes", "image", "username"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2847,6 +2953,20 @@ func (ec *executionContext) unmarshalInputAddBookmarkRequest(ctx context.Context
 				return it, err
 			}
 			it.Notes = data
+		case "image":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("image"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Image = data
+		case "username":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("username"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Username = data
 		}
 	}
 
@@ -2882,6 +3002,10 @@ func (ec *executionContext) _Bookmark(ctx context.Context, sel ast.SelectionSet,
 			out.Values[i] = ec._Bookmark_location(ctx, field, obj)
 		case "notes":
 			out.Values[i] = ec._Bookmark_notes(ctx, field, obj)
+		case "image":
+			out.Values[i] = ec._Bookmark_image(ctx, field, obj)
+		case "username":
+			out.Values[i] = ec._Bookmark_username(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

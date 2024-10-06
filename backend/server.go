@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -19,9 +21,16 @@ import (
 const port = "8020"
 
 func main() {
+	fmt.Println("Starting")
 	a := app.App{}
 	// Ensure the app is initialized and passed in as a Resolver dependency
 	a.Init()
+
+	err := a.DBConn.Ping(context.Background())
+	if err != nil {
+		log.Fatal("db connection failed")
+	}
+	fmt.Println("DB Connected")
 
 	router := chi.NewRouter()
 	// Add CORS middleware around every request
@@ -46,7 +55,7 @@ func main() {
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)
 
-	err := http.ListenAndServe(":"+port, router)
+	err = http.ListenAndServe(":"+port, router)
 	if err != nil {
 		panic(err)
 	}

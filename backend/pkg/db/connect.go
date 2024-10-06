@@ -41,34 +41,35 @@ func GetDBConn(ctx context.Context) *pgx.Conn {
 	dsn := fmt.Sprintf("user=%s password=%s database=%s", dbUser, dbPwd, dbName)
 	config, err := pgx.ParseConfig(dsn)
 	if err != nil {
-		panic(err)
+		// TODO: change these panics to handle/log errors
+		log.Fatalf("Error parsing config")
 	}
 	var opts []cloudsqlconn.Option
 	d, err := cloudsqlconn.NewDialer(ctx, opts...)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error with cloudsqlconn.NewDialer")
 	}
 	// Use the Cloud SQL connector to handle connecting to the instance.
-	// This approach does *NOT* require the Cloud SQL proxy.
 	config.DialFunc = func(ctx context.Context, network, instance string) (net.Conn, error) {
 		return d.Dial(ctx, instanceConnectionName)
 	}
 	dbURI := stdlib.RegisterConnConfig(config)
 	sqlDb, err := sql.Open("pgx", dbURI)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error opening database connection")
 	}
 	conn, err := sqlDb.Conn(ctx)
 	if err != nil {
-		// handle error from acquiring connection from DB pool
+		log.Fatalf("Error getting database connection")
 	}
 
+	// Get the pgx.Conn of the database/sql connection
 	err = conn.Raw(func(driverConn any) error {
-		pgxConn = driverConn.(*stdlib.Conn).Conn() // conn is a *pgx.Conn
+		pgxConn = driverConn.(*stdlib.Conn).Conn()
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error getting pgx.Conn")
 	}
 
 	return pgxConn

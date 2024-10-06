@@ -8,6 +8,8 @@ type AddBookmarkRequest struct {
 	Region   *string `json:"region,omitempty"`
 	Location *string `json:"location,omitempty"`
 	Notes    *string `json:"notes,omitempty"`
+	Image    *string `json:"image,omitempty"`
+	Username *string `json:"username,omitempty"`
 }
 
 type Bookmark struct {
@@ -16,6 +18,8 @@ type Bookmark struct {
 	Region   *string `json:"region,omitempty"`
 	Location *string `json:"location,omitempty"`
 	Notes    *string `json:"notes,omitempty"`
+	Image    *string `json:"image,omitempty"`
+	Username *string `json:"username,omitempty"`
 }
 
 type Mutation struct {
