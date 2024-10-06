@@ -7,6 +7,7 @@ type AddBookmarkRequest struct {
 	Grape    *string `json:"grape,omitempty"`
 	Region   *string `json:"region,omitempty"`
 	Location *string `json:"location,omitempty"`
+	Notes    *string `json:"notes,omitempty"`
 }
 
 type Bookmark struct {
@@ -14,6 +15,7 @@ type Bookmark struct {
 	Grape    *string `json:"grape,omitempty"`
 	Region   *string `json:"region,omitempty"`
 	Location *string `json:"location,omitempty"`
+	Notes    *string `json:"notes,omitempty"`
 }
 
 type Mutation struct {
@@ -23,6 +25,8 @@ type Query struct {
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID        string  `json:"id"`
+	FirstName *string `json:"first_name,omitempty"`
+	LastName  *string `json:"last_name,omitempty"`
+	Email     *string `json:"email,omitempty"`
 }

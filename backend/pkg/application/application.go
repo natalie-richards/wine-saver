@@ -1,9 +1,7 @@
 package application
 
-import (
-	"github.com/jackc/pgx/v5/pgxpool"
-)
+import "github.com/jackc/pgx/v5"
 
 type Application struct {
-	DBConn *pgxpool.Pool
+	DBConn *pgx.Conn
 }

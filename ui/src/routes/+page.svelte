@@ -25,6 +25,7 @@
 			}
 			if (result.type === 'success') {
 				if (!result.data?.results) {
+					// TODO: Handle error responses
 					console.error('No results available');
 					return;
 				}
@@ -44,7 +45,7 @@
 		</CardHeader>
 		<CardBody>
 			<form
-				action="?/uploadImage"
+				action="?/uploadImageAndGetWineResult"
 				method="POST"
 				enctype="multipart/form-data"
 				use:enhance={submitImage}
