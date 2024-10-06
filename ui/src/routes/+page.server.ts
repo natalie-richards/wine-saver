@@ -6,7 +6,7 @@ import { RAPIDAPI_KEY } from '$env/static/private';
 import path from 'path';
 
 export const actions: Actions = {
-	uploadImage: async ({ request }) => {
+	uploadImageAndGetWineResult: async ({ request }) => {
 		const formData = await request.formData();
 		const file = formData.get('image_upload') as File;
 		// Want to prevent dupe file uploads. Would probably do something smarter

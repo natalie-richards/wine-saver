@@ -10,7 +10,7 @@ import (
 
 func (a *App) GetBookmarks(ctx context.Context) ([]*model.Bookmark, error) {
 	// TODO: Get User from context, validate user exists, and use it to get bookmarks
-	rows, err := a.DBConn.Query(ctx, "select user_id, title, address from bookmarks")
+	rows, err := a.DBConn.Query(ctx, "select * from app.bookmarks")
 	if err != nil {
 		log.Fatal(err)
 	}

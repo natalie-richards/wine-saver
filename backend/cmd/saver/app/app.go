@@ -12,5 +12,5 @@ type App struct {
 }
 
 func (a *App) Init() {
-	a.DBConn = gcp.GetDBPool(context.Background())
+	a.DBConn = gcp.GetDBConn(context.Background())
 }

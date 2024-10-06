@@ -7,14 +7,12 @@ package graph
 import (
 	"context"
 
-	"github.com/natalie-richards/wine-app/cmd/saver/app"
 	"github.com/natalie-richards/wine-app/graph/model"
 )
 
 // AddBookmark is the resolver for the addBookmark field.
 func (r *mutationResolver) AddBookmark(ctx context.Context, input model.AddBookmarkRequest) (*model.Bookmark, error) {
-	var app app.App
-	err := app.AddBookmark(ctx, &input)
+	err := r.App.AddBookmark(ctx, &input)
 	if err != nil {
 		return nil, err
 	}
@@ -24,8 +22,7 @@ func (r *mutationResolver) AddBookmark(ctx context.Context, input model.AddBookm
 
 // ListBookmarks is the resolver for the listBookmarks field.
 func (r *queryResolver) ListBookmarks(ctx context.Context) ([]*model.Bookmark, error) {
-	var app app.App
-	bookmarks, err := app.GetBookmarks(ctx)
+	bookmarks, err := r.App.GetBookmarks(ctx)
 	if err != nil {
 		return nil, err
 	}
