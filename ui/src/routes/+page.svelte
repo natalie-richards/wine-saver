@@ -60,7 +60,7 @@
 		location: '',
 		notes: '',
 		image: imageURL,
-		username: 'rockbot_user'
+		username: 'app_user'
 	};
 
 	const handleBookmarkSave = async () => {
