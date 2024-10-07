@@ -1,4 +1,4 @@
-# wine-saver# Wine Saver
+# Wine Saver
 
 Welcome to the Wine Saver project! This application helps you keep track of wines you like/dislike, ensuring you optimize your grocery trips and Costco runs.
 

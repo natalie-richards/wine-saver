@@ -35,7 +35,6 @@ func (a *App) GetBookmarks(ctx context.Context) ([]*model.Bookmark, error) {
 
 func (a *App) AddBookmark(ctx context.Context, bookmark *model.AddBookmarkRequest) error {
 	// TODO: Get User from context, validate user exists before saving bookmark
-	fmt.Println("incoming", bookmark)
 	query := `INSERT INTO app.bookmarks (name, grape, region, location, notes, username, image) VALUES (@name, @grape, @region, @location, @notes, @username, @image)`
 	args := pgx.NamedArgs{
 		"name":     bookmark.Name,

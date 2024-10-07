@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -21,7 +20,7 @@ import (
 const port = "8020"
 
 func main() {
-	fmt.Println("Starting")
+	log.Printf("Starting server")
 	a := app.App{}
 	// Ensure the app is initialized and passed in as a Resolver dependency
 	a.Init()
@@ -30,7 +29,7 @@ func main() {
 	if err != nil {
 		log.Fatal("db connection failed")
 	}
-	fmt.Println("DB Connected")
+	log.Printf("DB Connected")
 
 	router := chi.NewRouter()
 	// Add CORS middleware around every request
