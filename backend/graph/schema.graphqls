@@ -4,6 +4,8 @@ type Bookmark {
   region: String
   location: String
   notes: String
+  image: String
+  username: String
 }
 
 input AddBookmarkRequest {
@@ -12,6 +14,8 @@ input AddBookmarkRequest {
   region: String
   location: String
   notes: String
+  image: String
+  username: String
 }
 
 type User {
