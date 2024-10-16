@@ -14,7 +14,8 @@
 		ListGroup,
 		ListGroupItem,
 		Row,
-		Spinner
+		Spinner,
+		Toast
 	} from '@sveltestrap/sveltestrap';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { gql, request } from 'graphql-request';
@@ -26,6 +27,7 @@
 	let results: { name: string; probablity: number }[] = [];
 	let imageURL = '';
 	let selected = -1;
+	let showToast = false;
 
 	const authorizedExtensions = ['.jpg', '.jpeg', '.png'];
 
@@ -87,9 +89,11 @@
 		const response: Response = await request(API_URL, document);
 		if (!response.ok) {
 			console.error(response.statusText);
+			// TODO: show error message
 			return;
 		}
-		// TODO: show error message
+		// This also needs work
+		showToast = true;
 	};
 </script>
 
@@ -166,4 +170,10 @@
 	<Container class="mt-5 d-flex justify-content-center">
 		<Spinner />
 	</Container>
+{/if}
+
+{#if showToast}
+	<Toast isOpen={showToast} color="success" class="position-fixed bottom-0 end-0 m-3">
+		<p class="mb-0">Bookmark saved successfully</p>
+	</Toast>
 {/if}
