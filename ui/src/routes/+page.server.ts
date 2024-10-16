@@ -11,6 +11,7 @@ export const actions: Actions = {
 		const file = formData.get('image_upload') as File;
 		// Want to prevent dupe file uploads. Would probably do something smarter
 		// like hash the image and use that as the file name. For now, just append a timestamp
+		// Also I should be compressing the image to save on storage costs
 		let fileName = path.parse(file.name).name;
 		const fileExt = path.parse(file.name).ext;
 		fileName = fileName + '-' + Date.now().toString() + fileExt;

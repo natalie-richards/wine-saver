@@ -41,7 +41,6 @@ func (a *App) AddBookmark(ctx context.Context, bookmark *model.AddBookmarkReques
 	}
 	_, err := a.DBConn.Exec(ctx, query, args)
 	if err != nil {
-		// TODO: set up logging
 		log.Fatal(err)
 		return err
 	}

@@ -15,7 +15,9 @@
 		ListGroupItem,
 		Row,
 		Spinner,
-		Toast
+		Toast,
+		ToastBody,
+		ToastHeader
 	} from '@sveltestrap/sveltestrap';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { gql, request } from 'graphql-request';
@@ -34,6 +36,7 @@
 	const submitImage: SubmitFunction = () => {
 		results = [];
 		processing = true;
+		showToast = false;
 		return async ({ result }) => {
 			processing = false;
 			if (result.type === 'failure') {
@@ -86,14 +89,10 @@
 					username
 				}
 			}`;
-		const response: Response = await request(API_URL, document);
-		if (!response.ok) {
-			console.error(response.statusText);
-			// TODO: show error message
-			return;
-		}
-		// This also needs work
-		showToast = true;
+
+		await request(API_URL, document)
+			.then(() => (showToast = true))
+			.catch((err) => console.error(err));
 	};
 </script>
 
@@ -172,8 +171,9 @@
 	</Container>
 {/if}
 
-{#if showToast}
-	<Toast isOpen={showToast} color="success" class="position-fixed bottom-0 end-0 m-3">
-		<p class="mb-0">Bookmark saved successfully</p>
-	</Toast>
-{/if}
+<Toast isOpen={showToast} autohide color="success" class="position-fixed bottom-0 end-0 m-3">
+	<ToastHeader>Success</ToastHeader>
+	<ToastBody>
+		<p class="mb-0">View your bookmarks <a href="/bookmarks">here</a></p>
+	</ToastBody>
+</Toast>
