@@ -24,6 +24,8 @@ export const actions: Actions = {
 			const responseHeaders = new Headers();
 			responseHeaders.append('Content-Type', 'application/octet-stream');
 
+			// TODO: Compress file before upload
+
 			const response = await fetch(url, {
 				method: 'PUT',
 				headers: responseHeaders,

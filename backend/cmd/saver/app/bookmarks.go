@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/jackc/pgx/v5"
@@ -10,24 +9,19 @@ import (
 )
 
 func (a *App) GetBookmarks(ctx context.Context) ([]*model.Bookmark, error) {
-	// TODO: Get User from context, validate user exists, and use id to get bookmarks
-	rows, err := a.DBConn.Query(ctx, "select * from app.bookmarks")
+	// TODO: Get User from context, validate user exists, and use username input to get bookmarks
+	rows, err := a.DBConn.Query(ctx, "SELECT * from app.bookmarks WHERE username = 'app_user'")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
-
-	var bookmarks []*model.Bookmark
-	for rows.Next() {
-		bookmark := model.Bookmark{}
-		err := rows.Scan(&bookmark.Name, &bookmark.Region, &bookmark.Grape, &bookmark.Location, &bookmark.Notes, &bookmark.Username, &bookmark.Image)
-		if err != nil {
-			return nil, fmt.Errorf("unable to scan row: %w", err)
-		}
-		bookmarks = append(bookmarks, &bookmark)
-	}
-	if err := rows.Err(); err != nil {
+	collectRows, err := pgx.CollectRows(rows, pgx.RowToStructByName[model.Bookmark])
+	if err != nil {
 		log.Fatal(err)
+	}
+	var bookmarks []*model.Bookmark
+	for _, bookmark := range collectRows {
+		bookmarks = append(bookmarks, &bookmark)
 	}
 
 	return bookmarks, nil

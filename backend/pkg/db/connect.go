@@ -10,13 +10,19 @@ import (
 
 	"cloud.google.com/go/cloudsqlconn"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/joho/godotenv"
 )
 
-var pgxConn *pgx.Conn
+type PgxConnIface interface {
+	Ping(ctx context.Context) error
+	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+	Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error)
+}
 
-func GetDBConn(ctx context.Context) *pgx.Conn {
+func GetDBConn(ctx context.Context) PgxConnIface {
 
 	// TODO: Scrap .env and include credentials in Cloud Secret Manager for security
 	err := godotenv.Load(".env")
@@ -63,14 +69,16 @@ func GetDBConn(ctx context.Context) *pgx.Conn {
 		log.Fatalf("Error getting database connection")
 	}
 
+	var pgxDriver *pgx.Conn
+
 	// Get the pgx.Conn of the database/sql connection
 	err = conn.Raw(func(driverConn any) error {
-		pgxConn = driverConn.(*stdlib.Conn).Conn()
+		pgxDriver = driverConn.(*stdlib.Conn).Conn()
 		return nil
 	})
 	if err != nil {
 		log.Fatalf("Error getting pgx.Conn")
 	}
 
-	return pgxConn
+	return pgxDriver
 }

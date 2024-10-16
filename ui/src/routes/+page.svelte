@@ -14,7 +14,8 @@
 		ListGroup,
 		ListGroupItem,
 		Row,
-		Spinner
+		Spinner,
+		Toast
 	} from '@sveltestrap/sveltestrap';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { gql, request } from 'graphql-request';
@@ -26,6 +27,7 @@
 	let results: { name: string; probablity: number }[] = [];
 	let imageURL = '';
 	let selected = -1;
+	let showToast = false;
 
 	const authorizedExtensions = ['.jpg', '.jpeg', '.png'];
 
@@ -35,7 +37,7 @@
 		return async ({ result }) => {
 			processing = false;
 			if (result.type === 'failure') {
-				console.error('Failed to upload image', result);
+				console.error('Failed to get results', result);
 			}
 			if (result.type === 'success') {
 				if (!result.data?.results) {
@@ -65,31 +67,33 @@
 
 	const handleBookmarkSave = async () => {
 		const document = gql`
-			{
-				mutation {
-					addBookmark(input: { 
-					name: ${formValues.name}, 
-					region: ${formValues.region},
-					grape: ${formValues.grape},  
-					location: ${formValues.location},  
-					notes:  ${formValues.notes},
-					image:  ${formValues.image},
-					username:  ${formValues.username},      
-					}) {
-						name
-					}
+			mutation {
+				addBookmark(input: { 
+				name: "${formValues.name}", 
+				region: "${formValues.region}",
+				grape: "${formValues.grape}",  
+				location: "${formValues.location}",  
+				notes:  "${formValues.notes}",
+				image:  "${imageURL}",
+				username:  "${formValues.username}",      
+				}) {
+					name
+					region
+					grape
+					location
+					notes
+					image
+					username
 				}
-			}
-		`;
+			}`;
 		const response: Response = await request(API_URL, document);
 		if (!response.ok) {
 			console.error(response.statusText);
+			// TODO: show error message
 			return;
 		}
-		console.log('Bookmark saved');
-		// create graphQL request to save formValues
-		//
-		console.log(formValues);
+		// This also needs work
+		showToast = true;
 	};
 </script>
 
@@ -112,9 +116,6 @@
 					accept={authorizedExtensions.join(',')}
 					required
 				/>
-				{#if processing}
-					<Spinner />
-				{/if}
 				<Button color="primary" type="submit">Submit</Button>
 			</form>
 		</CardBody>
@@ -143,7 +144,7 @@
 			</Col>
 		</Row>
 	</Container>
-	{#if selected > 1}
+	{#if selected > -1}
 		<Container class="mt-5">
 			<Row class="align-items-center">
 				<h2 class="text-center">Save Bookmark</h2>
@@ -166,7 +167,13 @@
 		</Container>
 	{/if}
 {:else if processing}
-	<Container class="mt-5">
+	<Container class="mt-5 d-flex justify-content-center">
 		<Spinner />
 	</Container>
+{/if}
+
+{#if showToast}
+	<Toast isOpen={showToast} color="success" class="position-fixed bottom-0 end-0 m-3">
+		<p class="mb-0">Bookmark saved successfully</p>
+	</Toast>
 {/if}
