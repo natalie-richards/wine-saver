@@ -38,7 +38,7 @@ export const actions: Actions = {
 			console.error('error', error);
 		}
 
-		// Call the wine label API
+		// Call the wine label API, which is actually terrible and I should be using a different one
 		const data = new FormData();
 		data.append('url', GCP_BASE_URL + fileName);
 		const options = {

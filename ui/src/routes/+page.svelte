@@ -166,8 +166,9 @@
 		</Container>
 	{/if}
 {:else if processing}
-	<Container class="mt-5 d-flex justify-content-center">
+	<Container class="mt-5 d-flex justify-content-center flex-wrap">
 		<Spinner />
+		<p class="w-100 text-center p-2">Sorry this is taking so long</p>
 	</Container>
 {/if}
 
