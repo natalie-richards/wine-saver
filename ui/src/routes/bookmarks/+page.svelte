@@ -36,7 +36,7 @@
 			{#if data?.length}
 				{#each data as bookmark}
 					<Col sm="6">
-						<Card>
+						<Card class="m-2">
 							<Row>
 								{#if bookmark.image}
 									<Col sm="6" class="text-center" style="max-height: 30vh">

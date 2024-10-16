@@ -29,7 +29,6 @@ func Test_AddBookmarks(t *testing.T) {
 		Username: util.Ptr("app_user"),
 	}
 
-	// mockDB.ExpectBegin()
 	mockDB.ExpectExec("INSERT INTO app.bookmarks").
 		WithArgs(testData.Name, testData.Grape, testData.Region, testData.Location, testData.Notes, testData.Username, testData.Image).
 		WillReturnResult(pgxmock.NewResult("INSERT", 1))
@@ -41,3 +40,4 @@ func Test_AddBookmarks(t *testing.T) {
 }
 
 // TODO: Add test for GetBookmarks
+// TODO: Add tests for GraphQL endpoints. Mock resolver
